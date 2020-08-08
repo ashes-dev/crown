@@ -24,7 +24,7 @@ provider.setCustomParameters({ prompt: 'select_account' })
 export const SignInWithGoogle = () => auth.signInWithPopup(provider)
 
 // storing user profile
-export const craeteUserProfileDocument = async (userAuth, additionalData) => {
+export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return
 
     const userRef = firestore.doc(`users/${userAuth.uid}`)
@@ -38,7 +38,8 @@ export const craeteUserProfileDocument = async (userAuth, additionalData) => {
             await userRef.set({
                 displayName,
                 email,
-                createdAt
+                createdAt,
+                ...additionalData
             })
         } catch (err) {
             console.error(err)

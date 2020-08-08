@@ -4,7 +4,7 @@ import './App.css'
 import { Switch, Route } from 'react-router-dom'
 
 // firebase
-import { auth, craeteUserProfileDocument } from './firebase/firebase.utils'
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
 // components
 import HomePage from './pages/homepage/homepage.component'
@@ -24,7 +24,7 @@ class App extends React.Component {
   componentDidMount() {
     this.unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if(userAuth) {
-        const userRef = await craeteUserProfileDocument(userAuth)
+        const userRef = await createUserProfileDocument(userAuth)
         userRef.onSnapshot(snapShot => {
           this.setState({
             currentUser: { id: snapShot.uid, ...snapShot.data() }

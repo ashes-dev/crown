@@ -6,6 +6,8 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 // redux
 import { connect } from 'react-redux'
 import { setCurrentUser } from './redux/user/user.actions'
+import { createStructuredSelector } from 'reselect'
+import { selectCurrentUser } from './redux/user/user.selector'
 
 // firebase
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
@@ -19,14 +21,13 @@ import Header from './components/header/header.component'
 
 class App extends React.Component {
   unSubscribeFromAuth = null
-
   componentDidMount() {
     const { setCurrentUser } = this.props
     this.unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if(userAuth) {
         const userRef = await createUserProfileDocument(userAuth)
         userRef.onSnapshot(snapShot => {
-          setCurrentUser({id: snapShot.id, ...snapShot.data()})
+          setCurrentUser({ id: snapShot.id, ...snapShot.data() })
         })
       }
       setCurrentUser(userAuth)
@@ -40,12 +41,13 @@ class App extends React.Component {
   render() {
     return (
       <div className='app'>
+
         <Header />
     
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/shop" component={Shop} />
-          <Route exact path="/signin" render={() => this.props.currentUser ? <Redirect to='/'/> : <SignInSignUp/>} />
+          <Route exact path="/" component={HomePage}/>
+          <Route exact path="/shop" component={Shop}/>
+          <Route exact path="/signin" render={() => this.props.currentUser ? <Redirect to='/'/> : <SignInSignUp/>}/>
         </Switch>
 
       </div>
@@ -54,8 +56,8 @@ class App extends React.Component {
 
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 })
 
 const mapDispatchToProps = dispatch => ({

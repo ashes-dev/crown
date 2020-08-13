@@ -8,6 +8,7 @@ import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selector
 
 // component
 import CheckoutItem from '../../components/checkout-item/chckout-item.component'
+import StripeButton from '../../components/stripe-button/stripe-button.component'
 
 const Checkout = ({ cartItems, total }) => (
     <div className='checkout-page'>
@@ -34,6 +35,10 @@ const Checkout = ({ cartItems, total }) => (
         <div className='total'>
             <span>TOTAL: ${total}</span>
         </div>
+        <div className='test-warning'>
+            * Patment is in Testing Phase *
+        </div>
+        <StripeButton />
     </div>
 )
 
